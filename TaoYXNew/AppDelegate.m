@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "stdPubFunc.h"
+#import "XZMCoreNewFeatureVC.h"
+#import "CALayer+Transition.h"
 
 @interface AppDelegate ()
 
@@ -18,44 +20,63 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
-//    {
-//        //IOS8
-//        //创建UIUserNotificationSettings，并设置消息的显示类类型
-//        UIUserNotificationSettings *notiSettings = [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeAlert | UIRemoteNotificationTypeSound) categories:nil];
-//        
-//        [application registerUserNotificationSettings:notiSettings];
-//        
-//    } else{ // ios7
-//        [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge                                       |UIRemoteNotificationTypeSound                                      |UIRemoteNotificationTypeAlert)];
-//    }
-    
     // 通过 appId、 appKey 、appSecret 启动SDK，注：该方法需要在主线程中调用
     [GeTuiSdk startSdkWithAppId:kGtAppId appKey:kGtAppKey appSecret:kGtAppSecret delegate:self];
-    
     // 注册APNS
     [self registerUserNotification];
-    
     // 处理远程通知启动APP
     [self receiveNotificationByLaunchingOptions:launchOptions];
     
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    self.window.backgroundColor = [UIColor whiteColor];
+   // self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    
+    
+    UIWindow *window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    window.backgroundColor = [UIColor whiteColor];
+    self.window = window;
+    //判断是否需要显示：（内部已经考虑版本及本地版本缓存）
+//    BOOL canShow = [XZMCoreNewFeatureVC canShowNewFeature];
+//    
+//    //测试代码，正式版本应该删除
+//    canShow = YES;
+//    
+//    if(canShow){ // 初始化新特性界面
+//        window.rootViewController = [XZMCoreNewFeatureVC newFeatureVCWithImageNames:@[@"LauImg1",@"LauImg2",@"LauImg3",@"LauImg4"] enterBlock:^{
+//            
+//            NSLog(@"进入主页面");
+//            [self enterMainWindow];
+//            
+//        } configuration:^(UIButton *enterButton) { // 配置进入按钮
+//            [enterButton setBackgroundImage:[UIImage imageNamed:@"btn_nor"] forState:UIControlStateNormal];
+//            [enterButton setBackgroundImage:[UIImage imageNamed:@"btn_pressed"] forState:UIControlStateHighlighted];
+//            enterButton.bounds = CGRectMake(0, 0, 120, 40);
+//            enterButton.center = CGPointMake(KScreenW * 0.5, KScreenH* 0.85);
+//        }];
+//        
+//    }else{
+//        
+//        [self enterMainWindow];
+//    }
+
+    [self enterMainWindow];
+    
     [self.window makeKeyAndVisible];
     
-    ViewController *vc=[[ViewController alloc]init];
-    UINavigationController *navRoot=[[UINavigationController alloc]initWithRootViewController:vc];
     
-    [self.window setRootViewController:navRoot];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [stdPubFunc setIsLogin:@"0"];//设置登录状态为未登录
 
     
     return YES;
 }
-
+-(void)enterMainWindow{
+    ViewController *vc=[[ViewController alloc]init];
+    UINavigationController *navRoot=[[UINavigationController alloc]initWithRootViewController:vc];
+    
+    [self.window setRootViewController:navRoot];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.

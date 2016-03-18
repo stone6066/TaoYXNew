@@ -400,7 +400,7 @@ static NSString * const titleCellid = @"titleCellid";//标题页
     }
     else if(indexPath.section==1)
     {
-        //广告栏加载============================
+        //轮播加载============================
         NSMutableArray *arr=[[NSMutableArray alloc]initWithObjects:HomeAdUrl1,HomeAdUrl2,HomeAdUrl3,nil];
         //设置标题数组
         NSMutableArray *strArr = [[NSMutableArray alloc]initWithObjects:@"餐企商超",@"物流信息",@"商务服务", nil];
